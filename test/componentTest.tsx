@@ -48,7 +48,7 @@ test("component render", (): void => {
 
 
 test("component ssr render", (): void => {
-  expect.assertions(4)
+  expect.assertions(5)
 
   class MyComponent {
     public listeners =
@@ -74,6 +74,7 @@ test("component ssr render", (): void => {
 
   const element = myComponent.render([])
   expect(element).toEqual(expect.any(HTMLDivElement))
+  expect(element).not.toEqual(el)
 
   const element2 = myComponent.render([])
   expect(element2).toEqual(element)
@@ -106,7 +107,7 @@ test("component ssr render init return", (): void => {
   document.body.appendChild(el)
 
   const element = myComponent.render([])
-  expect(element).toEqual(expect.any(HTMLDivElement))
+  expect(element).toEqual(el)
 
   const element2 = myComponent.render([])
   expect(element2).toEqual(element)

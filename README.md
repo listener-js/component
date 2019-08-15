@@ -40,6 +40,7 @@ export const myComponent = new MyComponent()
 import { listener } from "@listener-js/listener"
 import { component } from "@listener-js/component"
 import { store } from "@listener-js/store"
+
 import { myComponent } from "./myComponent"
 
 listener({ component, myComponent, store })
