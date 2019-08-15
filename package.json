@@ -1,0 +1,65 @@
+{
+  "name": "component",
+  "version": "0.0.1",
+  "description": "",
+  "keywords": [
+    ""
+  ],
+  "author": " <>",
+  "main": "dist/component.js",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com//component.git"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com//component#readme",
+  "scripts": {
+    "fix": "npm run lint -- --fix",
+    "lint": "eslint --ignore-path .gitignore --ext=js .",
+    "pretty": "prettier --write **/*.css **/*.json **/*.md",
+    "test": "jest",
+    "build": "tsc",
+    "docs": "typedoc --out docs --media media --theme markdown src/*.ts"
+  },
+  "devDependencies": {
+    "@listener-js/listener": "1.12.0",
+    "@listener-js/log": "1.18.0",
+    "@listener-js/store": "0.1.0",
+    "@types/jest": "24.0.17",
+    "@types/node": "12.7.1",
+    "@typescript-eslint/eslint-plugin": "1.13.0",
+    "@typescript-eslint/parser": "1.13.0",
+    "eslint": "6.1.0",
+    "eslint-config-prettier": "6.0.0",
+    "eslint-plugin-prettier": "3.1.0",
+    "husky": "3.0.3",
+    "jest": "24.8.0",
+    "lint-staged": "9.2.1",
+    "prettier": "1.18.2",
+    "ts-jest": "24.0.2",
+    "typedoc": "0.15.0",
+    "typedoc-plugin-markdown": "2.1.1",
+    "typescript": "3.5.3"
+  },
+  "prettier": {
+    "printWidth": 60,
+    "semi": false,
+    "trailingComma": "es5"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged && npm test && npm run docs && git add docs"
+    }
+  },
+  "lint-staged": {
+    "*.{css,json,md}": [
+      "prettier --write",
+      "git add"
+    ],
+    "*.{js,jsx,ts}": [
+      "eslint --ignore-path .gitignore --fix",
+      "git add"
+    ]
+  },
+  "dependencies": {}
+}
