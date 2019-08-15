@@ -5,7 +5,9 @@
 ## Install
 
 ```bash
-npm install @listener-js/listener @listener-js/component
+npm install @listener-js/listener \
+  @listener-js/component \
+  @listener-js/store
 ```
 
 ## Example component
@@ -36,9 +38,11 @@ export const myComponent = new MyComponent()
 
 ```js
 import { listener } from "@listener-js/listener"
+import { component } from "@listener-js/component"
+import { store } from "@listener-js/store"
 import { myComponent } from "./myComponent"
 
-listener({ myComponent })
+listener({ component, myComponent, store })
 
 myComponent.render([]) // Element
 ```
