@@ -17,7 +17,7 @@ test("component", (): void => {
 })
 
 test("component render", (): void => {
-  expect.assertions(4)
+  expect.assertions(5)
 
   class MyComponent {
     public listeners =
@@ -29,9 +29,9 @@ test("component render", (): void => {
       expect(1).toBe(1)
     }
 
-    public build(): Element {
+    public build(id: string[]): Element {
       expect(1).toBe(1)
-      return <div />
+      return <div id={id} />
     }
   }
 
@@ -40,15 +40,17 @@ test("component render", (): void => {
   listener({ myComponent })
 
   const element = myComponent.render([])
+
   expect(element).toEqual(expect.any(HTMLDivElement))
+  expect(element.id).toBe("myComponent")
 
   const element2 = myComponent.render([])
-  expect(element2).toEqual(element)
+  expect(element2).toBe(element)
 })
 
 
 test("component ssr render", (): void => {
-  expect.assertions(5)
+  expect.assertions(6)
 
   class MyComponent {
     public listeners =
@@ -60,28 +62,33 @@ test("component ssr render", (): void => {
       expect(ssrElement).toBe(el)
     }
 
-    public build(): Element {
+    public build(id: string[]): Element {
       expect(1).toBe(1)
-      return <div />
+      return <div id={id} />
     }
   }
 
   const myComponent = new MyComponent()
   listener({ myComponent })
 
-  const el = <div id="myComponent.render" />
+  const el = <div id="myComponent" />
   document.body.appendChild(el)
 
   const element = myComponent.render([])
+  
   expect(element).toEqual(expect.any(HTMLDivElement))
-  expect(element).not.toEqual(el)
+  expect(element).not.toBe(el)
 
   const element2 = myComponent.render([])
-  expect(element2).toEqual(element)
+  expect(element2).toBe(element)
+
+  expect(
+    document.getElementById(element.id)
+  ).not.toBe(el)
 })
 
 test("component ssr render init return", (): void => {
-  expect.assertions(3)
+  expect.assertions(4)
 
   class MyComponent {
     public listeners =
@@ -94,21 +101,23 @@ test("component ssr render init return", (): void => {
       return ssrElement
     }
 
-    public build(): Element {
+    public build(id: string[]): Element {
       expect(0).toBe(1) // fail
-      return <div />
+      return <div id={id} />
     }
   }
 
   const myComponent = new MyComponent()
   listener({ myComponent })
 
-  const el = <div id="myComponent.render" />
+  const el = <div id="myComponent" />
   document.body.appendChild(el)
 
   const element = myComponent.render([])
-  expect(element).toEqual(el)
+  expect(element).toBe(el)
 
   const element2 = myComponent.render([])
-  expect(element2).toEqual(element)
+  expect(element2).toBe(element)
+
+  expect(document.getElementById(element.id)).toBe(element2)
 })

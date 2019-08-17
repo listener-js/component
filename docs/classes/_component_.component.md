@@ -24,6 +24,7 @@
 * [forceRender](_component_.component.md#forcerender)
 * [join](_component_.component.md#join)
 * [render](_component_.component.md#render)
+* [simpleId](_component_.component.md#private-simpleid)
 
 ### Object literals
 
@@ -132,6 +133,22 @@ Name | Type |
 `id` | string[] |
 
 **Returns:** *`Element`*
+
+___
+
+### `Private` simpleId
+
+▸ **simpleId**(`id`: string[]): *string[]*
+
+Defined in component.ts:164
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`id` | string[] |
+
+**Returns:** *string[]*
 
 ## Object literals
 

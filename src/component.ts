@@ -66,7 +66,7 @@ export class Component {
           ) {
             node[key] = val
             if (key === "id" && Array.isArray(val)) {
-              node[key] = val.join(".")
+              node[key] = this.simpleId(val).join("-")
             }
             //set synthetic events for onUpperCaseName
             if (
@@ -124,22 +124,22 @@ export class Component {
   }
 
   public render(id: string[]): Element {
-    const parentId = id.slice(1)
+    const simpleId = this.simpleId(id)
     const [instanceId] = id[1].split(/\./)
     
     let element: Element =
-      this.get(id, [ ...parentId, "elements" ])
+      this.get(id, [...simpleId, "elements" ])
 
     if (element !== undefined) {
       return element
     }
 
     const ssrElement = document.getElementById(
-      parentId.join(".")
+      simpleId.join("-")
     )
 
     if (ssrElement) {
-      this.set(id, [...parentId, "ssrElements"], ssrElement)
+      this.set(id, [...simpleId, "ssrElements"], ssrElement)
     }
 
     element = this.instances[instanceId].init(
@@ -150,9 +150,31 @@ export class Component {
       element = this.instances[instanceId].build(id)
     }
 
-    this.set(id, [...parentId, "elements"], element)
+    if (element && ssrElement && element !== ssrElement) {
+      ssrElement.parentNode.replaceChild(
+        element, ssrElement
+      )
+    }
+
+    this.set(id, [...simpleId, "elements"], element)
 
     return element
+  }
+
+  private simpleId(id: string[]): string[] {
+    return id
+      .reduce((memo, v: string) => {
+        const a = v.split(/\./)
+        
+        if (
+          a[0] !== "component" &&
+          (!a[1] || a[1] !== "build")
+        ) {
+          return memo.concat(a[0])
+        }
+        
+        return memo
+      }, [])
   }
 }
 
