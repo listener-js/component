@@ -128,7 +128,7 @@ export class Component {
     const [instanceId] = id[1].split(/\./)
     
     let element: Element =
-      this.get(id, [...simpleId, "elements" ])
+      this.get(id, [...simpleId, "elements"])
 
     if (element !== undefined) {
       return element
