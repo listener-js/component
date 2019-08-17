@@ -95,11 +95,18 @@ ___
 
 ###  forceRender
 
-▸ **forceRender**(): *void*
+▸ **forceRender**(`id`: string[], ...`args`: any[]): *`Element`*
 
 Defined in component.ts:122
 
-**Returns:** *void*
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`id` | string[] |
+`...args` | any[] |
+
+**Returns:** *`Element`*
 
 ___
 
@@ -122,15 +129,16 @@ ___
 
 ###  render
 
-▸ **render**(`id`: string[]): *`Element`*
+▸ **render**(`id`: string[], ...`args`: any[]): *`Element`*
 
-Defined in component.ts:126
+Defined in component.ts:142
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
 `id` | string[] |
+`...args` | any[] |
 
 **Returns:** *`Element`*
 
@@ -140,7 +148,7 @@ ___
 
 ▸ **simpleId**(`id`: string[]): *string[]*
 
-Defined in component.ts:164
+Defined in component.ts:184
 
 **Parameters:**
 

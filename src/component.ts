@@ -119,11 +119,27 @@ export class Component {
     this.instances[instanceId] = instance
   }
 
-  public forceRender(): void {
+  public forceRender(
+    id: string[], ...args: any[]
+  ): Element {
+    const simpleId = this.simpleId(id)
+    const [instanceId] = id[1].split(/\./)
 
+    const existingElement: Element =
+      this.get(id, [...simpleId, "elements"])
+    
+    const element = this.instances[instanceId].build(
+      id, ...args
+    )
+
+    existingElement.parentNode.replaceChild(
+      element, existingElement
+    )
+
+    return element
   }
 
-  public render(id: string[]): Element {
+  public render(id: string[], ...args: any[]): Element {
     const simpleId = this.simpleId(id)
     const [instanceId] = id[1].split(/\./)
     
@@ -142,12 +158,16 @@ export class Component {
       this.set(id, [...simpleId, "ssrElements"], ssrElement)
     }
 
-    element = this.instances[instanceId].init(
-      id, ssrElement
-    )
+    if (this.instances[instanceId].init) {
+      element = this.instances[instanceId].init(
+        id, ssrElement, ...args
+      )
+    }
 
     if (!element) {
-      element = this.instances[instanceId].build(id)
+      element = this.instances[instanceId].build(
+        id, ...args
+      )
     }
 
     if (element && ssrElement && element !== ssrElement) {
@@ -163,7 +183,7 @@ export class Component {
 
   private simpleId(id: string[]): string[] {
     return id
-      .reduce((memo, v: string) => {
+      .reduce((memo, v: string): string[] => {
         const a = v.split(/\./)
         
         if (
