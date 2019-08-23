@@ -1,11 +1,13 @@
 {
   "name": "@listener-js/component",
   "version": "0.0.1",
-  "description": "",
+  "description": "Listener web component",
   "keywords": [
-    ""
+    "listener",
+    "web",
+    "component"
   ],
-  "author": " <>",
+  "author": "Listener <emit@listener.events>",
   "main": "dist/component.js",
   "repository": {
     "type": "git",

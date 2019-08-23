@@ -1,5 +1,7 @@
 # component
 
+Listener web component
+
 ![component](media/component.gif)
 
 ## Install
@@ -18,7 +20,9 @@ npm install @listener-js/listener \
 import { component } from "@listener-js/component"
 
 export class MyComponent {
-  public listeners = ["build", "component.render", "init"]
+  public listeners = ["build", "init"]
+
+  public listenerInstances = ["component.render"]
 
   public render: typeof component.render
 
