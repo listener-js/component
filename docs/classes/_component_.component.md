@@ -15,6 +15,7 @@
 * [events](_component_.component.md#private-events)
 * [get](_component_.component.md#private-get)
 * [instances](_component_.component.md#private-instances)
+* [listenerInstances](_component_.component.md#listenerinstances)
 * [listeners](_component_.component.md#listeners)
 * [set](_component_.component.md#private-set)
 
@@ -36,7 +37,7 @@
 
 • **events**: *`Record<string, boolean>`*
 
-Defined in component.ts:24
+Defined in component.ts:25
 
 Synthetic event flag.
 
@@ -46,7 +47,7 @@ ___
 
 • **get**: *`get`*
 
-Defined in component.ts:16
+Defined in component.ts:17
 
 ___
 
@@ -54,14 +55,21 @@ ___
 
 • **instances**: *`Record<string, any>`*
 
-Defined in component.ts:19
+Defined in component.ts:20
+
+___
+
+###  listenerInstances
+
+• **listenerInstances**: *string[]* =  ["store.get", "store.set"]
+
+Defined in component.ts:15
 
 ___
 
 ###  listeners
 
-• **listeners**: *string[]* = 
-    [ "forceRender", "render", "store.get", "store.set" ]
+• **listeners**: *string[]* =  ["forceRender", "render"]
 
 Defined in component.ts:13
 
@@ -71,7 +79,7 @@ ___
 
 • **set**: *`set`*
 
-Defined in component.ts:17
+Defined in component.ts:18
 
 ## Methods
 
@@ -79,7 +87,7 @@ Defined in component.ts:17
 
 ▸ **createElement**(`tagName`: any): *`Element`*
 
-Defined in component.ts:42
+Defined in component.ts:43
 
 Substitute function for `React.createElement` in JSX.
 
@@ -97,7 +105,7 @@ ___
 
 ▸ **forceRender**(`id`: string[], ...`args`: any[]): *`Element`*
 
-Defined in component.ts:122
+Defined in component.ts:123
 
 **Parameters:**
 
@@ -114,7 +122,7 @@ ___
 
 ▸ **join**(`instanceId`: string, `instance`: any): *void*
 
-Defined in component.ts:117
+Defined in component.ts:118
 
 **Parameters:**
 
@@ -131,7 +139,7 @@ ___
 
 ▸ **render**(`id`: string[], ...`args`: any[]): *`Element`*
 
-Defined in component.ts:142
+Defined in component.ts:143
 
 **Parameters:**
 
@@ -148,7 +156,7 @@ ___
 
 ▸ **simpleId**(`id`: string[]): *string[]*
 
-Defined in component.ts:184
+Defined in component.ts:185
 
 **Parameters:**
 
@@ -164,7 +172,7 @@ Name | Type |
 
 ### ▪ **htmlProps**: *object*
 
-Defined in component.ts:29
+Defined in component.ts:30
 
 Dom element props.
 
@@ -172,40 +180,40 @@ Dom element props.
 
 • **className**: *boolean* = true
 
-Defined in component.ts:30
+Defined in component.ts:31
 
 ###  id
 
 • **id**: *boolean* = true
 
-Defined in component.ts:31
+Defined in component.ts:32
 
 ###  innerHTML
 
 • **innerHTML**: *boolean* = true
 
-Defined in component.ts:32
+Defined in component.ts:33
 
 ###  nodeValue
 
 • **nodeValue**: *boolean* = true
 
-Defined in component.ts:33
+Defined in component.ts:34
 
 ###  tabIndex
 
 • **tabIndex**: *boolean* = true
 
-Defined in component.ts:34
+Defined in component.ts:35
 
 ###  textContent
 
 • **textContent**: *boolean* = true
 
-Defined in component.ts:35
+Defined in component.ts:36
 
 ###  value
 
 • **value**: *boolean* = true
 
-Defined in component.ts:36
+Defined in component.ts:37

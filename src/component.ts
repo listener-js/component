@@ -10,8 +10,9 @@ declare global {
 }
 
 export class Component {
-  public listeners =
-    [ "forceRender", "render", "store.get", "store.set" ]
+  public listeners = ["forceRender", "render"]
+  
+  public listenerInstances = ["store.get", "store.set"]
   
   private get: typeof store.get
   private set: typeof store.set

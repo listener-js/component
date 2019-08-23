@@ -20,8 +20,9 @@ test("component render", (): void => {
   expect.assertions(5)
 
   class MyComponent {
-    public listeners =
-      ["build", "component", "init", "render"]
+    public listeners = ["build", "init", "render"]
+    
+    public listenerInstances = ["component"]
 
     public component: typeof component
 
@@ -56,9 +57,10 @@ test("component forceRender", (): void => {
   expect.assertions(7)
 
   class MyComponent {
-    public listeners = [
-      "build", "component", "forceRender", "init", "render"
-    ]
+    public listeners =
+      ["build", "forceRender", "init", "render"]
+
+    public listenerInstances = ["component"]
 
     public component: typeof component
 
@@ -101,8 +103,9 @@ test("nested component render", (): void => {
   expect.assertions(2)
 
   class MyComponent {
-    public listeners =
-      ["build", "component", "render"]
+    public listeners = ["build", "render"]
+
+    public listenerInstances = ["component"]
 
     public component: typeof component
 
@@ -118,8 +121,9 @@ test("nested component render", (): void => {
   }
 
   class OtherComponent {
-    public listeners =
-      ["build", "component", "render"]
+    public listeners = ["build", "render"]
+    
+    public listenerInstances = ["component"]
 
     public component: typeof component
 
@@ -148,8 +152,9 @@ test("component ssr render", (): void => {
   expect.assertions(6)
 
   class MyComponent {
-    public listeners =
-      ["build", "component", "init", "render"]
+    public listeners = ["build", "init", "render"]
+
+    public listenerInstances = ["component"]
 
     public component: typeof component
 
@@ -190,8 +195,9 @@ test("component ssr render init return", (): void => {
   expect.assertions(4)
 
   class MyComponent {
-    public listeners =
-      ["build", "component", "init", "render"]
+    public listeners = ["build", "init", "render"]
+
+    public listenerInstances = ["component"]
 
     public component: typeof component
 
