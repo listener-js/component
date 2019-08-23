@@ -22,9 +22,9 @@
     "docs": "typedoc --out docs --media media --theme markdown src/*.ts"
   },
   "devDependencies": {
-    "@listener-js/listener": "1.13.1",
-    "@listener-js/log": "1.18.0",
-    "@listener-js/store": "0.1.0",
+    "@listener-js/listener": "1.14.0",
+    "@listener-js/log": "1.19.0",
+    "@listener-js/store": "0.2.0",
     "@types/jest": "24.0.17",
     "@types/node": "12.7.1",
     "@typescript-eslint/eslint-plugin": "1.13.0",
