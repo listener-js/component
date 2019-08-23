@@ -1,8 +1,8 @@
-> **[component](README.md)**
+> **[@listener-js/component](README.md)**
 
 [Globals](globals.md) /
 
-# component
+# @listener-js/component
 
 ## Index
 

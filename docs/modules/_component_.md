@@ -1,4 +1,4 @@
-> **[component](../README.md)**
+> **[@listener-js/component](../README.md)**
 
 [Globals](../globals.md) / ["component"](_component_.md) /
 
