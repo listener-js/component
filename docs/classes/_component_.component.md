@@ -12,10 +12,10 @@
 
 ### Properties
 
+* [components](_component_.component.md#private-components)
 * [events](_component_.component.md#private-events)
 * [get](_component_.component.md#private-get)
-* [instances](_component_.component.md#private-instances)
-* [listenerInstances](_component_.component.md#listenerinstances)
+* [instances](_component_.component.md#instances)
 * [listeners](_component_.component.md#listeners)
 * [set](_component_.component.md#private-set)
 
@@ -33,11 +33,19 @@
 
 ## Properties
 
+### `Private` components
+
+• **components**: *`Record<string, any>`*
+
+Defined in component.ts:19
+
+___
+
 ### `Private` events
 
 • **events**: *`Record<string, boolean>`*
 
-Defined in component.ts:25
+Defined in component.ts:24
 
 Synthetic event flag.
 
@@ -47,23 +55,15 @@ ___
 
 • **get**: *`get`*
 
-Defined in component.ts:17
+Defined in component.ts:16
 
 ___
 
-### `Private` instances
+###  instances
 
-• **instances**: *`Record<string, any>`*
+• **instances**: *string[]* =  ["store.get", "store.set"]
 
-Defined in component.ts:20
-
-___
-
-###  listenerInstances
-
-• **listenerInstances**: *string[]* =  ["store.get", "store.set"]
-
-Defined in component.ts:15
+Defined in component.ts:13
 
 ___
 
@@ -71,7 +71,7 @@ ___
 
 • **listeners**: *string[]* =  ["forceRender", "render"]
 
-Defined in component.ts:13
+Defined in component.ts:14
 
 ___
 
@@ -79,7 +79,7 @@ ___
 
 • **set**: *`set`*
 
-Defined in component.ts:18
+Defined in component.ts:17
 
 ## Methods
 
@@ -87,7 +87,7 @@ Defined in component.ts:18
 
 ▸ **createElement**(`tagName`: any): *`Element`*
 
-Defined in component.ts:43
+Defined in component.ts:42
 
 Substitute function for `React.createElement` in JSX.
 
@@ -105,7 +105,7 @@ ___
 
 ▸ **forceRender**(`id`: string[], ...`args`: any[]): *`Element`*
 
-Defined in component.ts:123
+Defined in component.ts:122
 
 **Parameters:**
 
@@ -122,7 +122,7 @@ ___
 
 ▸ **join**(`instanceId`: string, `instance`: any): *void*
 
-Defined in component.ts:118
+Defined in component.ts:117
 
 **Parameters:**
 
@@ -139,7 +139,7 @@ ___
 
 ▸ **render**(`id`: string[], ...`args`: any[]): *`Element`*
 
-Defined in component.ts:143
+Defined in component.ts:142
 
 **Parameters:**
 
@@ -156,7 +156,7 @@ ___
 
 ▸ **simpleId**(`id`: string[]): *string[]*
 
-Defined in component.ts:185
+Defined in component.ts:184
 
 **Parameters:**
 
@@ -172,7 +172,7 @@ Name | Type |
 
 ### ▪ **htmlProps**: *object*
 
-Defined in component.ts:30
+Defined in component.ts:29
 
 Dom element props.
 
@@ -180,40 +180,40 @@ Dom element props.
 
 • **className**: *boolean* = true
 
-Defined in component.ts:31
+Defined in component.ts:30
 
 ###  id
 
 • **id**: *boolean* = true
 
-Defined in component.ts:32
+Defined in component.ts:31
 
 ###  innerHTML
 
 • **innerHTML**: *boolean* = true
 
-Defined in component.ts:33
+Defined in component.ts:32
 
 ###  nodeValue
 
 • **nodeValue**: *boolean* = true
 
-Defined in component.ts:34
+Defined in component.ts:33
 
 ###  tabIndex
 
 • **tabIndex**: *boolean* = true
 
-Defined in component.ts:35
+Defined in component.ts:34
 
 ###  textContent
 
 • **textContent**: *boolean* = true
 
-Defined in component.ts:36
+Defined in component.ts:35
 
 ###  value
 
 • **value**: *boolean* = true
 
-Defined in component.ts:37
+Defined in component.ts:36

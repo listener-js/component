@@ -10,14 +10,13 @@ declare global {
 }
 
 export class Component {
+  public instances = ["store.get", "store.set"]
   public listeners = ["forceRender", "render"]
-  
-  public listenerInstances = ["store.get", "store.set"]
   
   private get: typeof store.get
   private set: typeof store.set
 
-  private instances: Record<string, any> = {}
+  private components: Record<string, any> = {}
 
   /**
    * Synthetic event flag.
@@ -117,7 +116,7 @@ export class Component {
 
   public join(instanceId: string, instance: any): void {
     instance.createElement = this.createElement.bind(this)
-    this.instances[instanceId] = instance
+    this.components[instanceId] = instance
   }
 
   public forceRender(
@@ -129,7 +128,7 @@ export class Component {
     const existingElement: Element =
       this.get(id, [...simpleId, "elements"])
     
-    const element = this.instances[instanceId].build(
+    const element = this.components[instanceId].build(
       id, ...args
     )
 
@@ -159,14 +158,14 @@ export class Component {
       this.set(id, [...simpleId, "ssrElements"], ssrElement)
     }
 
-    if (this.instances[instanceId].init) {
-      element = this.instances[instanceId].init(
+    if (this.components[instanceId].init) {
+      element = this.components[instanceId].init(
         id, ssrElement, ...args
       )
     }
 
     if (!element) {
-      element = this.instances[instanceId].build(
+      element = this.components[instanceId].build(
         id, ...args
       )
     }

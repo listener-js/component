@@ -22,7 +22,7 @@ test("component render", (): void => {
   class MyComponent {
     public listeners = ["build", "init", "render"]
     
-    public listenerInstances = ["component"]
+    public instances = ["component"]
 
     public component: typeof component
 
@@ -60,7 +60,7 @@ test("component forceRender", (): void => {
     public listeners =
       ["build", "forceRender", "init", "render"]
 
-    public listenerInstances = ["component"]
+    public instances = ["component"]
 
     public component: typeof component
 
@@ -105,7 +105,7 @@ test("nested component render", (): void => {
   class MyComponent {
     public listeners = ["build", "render"]
 
-    public listenerInstances = ["component"]
+    public instances = ["component"]
 
     public component: typeof component
 
@@ -123,7 +123,7 @@ test("nested component render", (): void => {
   class OtherComponent {
     public listeners = ["build", "render"]
     
-    public listenerInstances = ["component"]
+    public instances = ["component"]
 
     public component: typeof component
 
@@ -154,7 +154,7 @@ test("component ssr render", (): void => {
   class MyComponent {
     public listeners = ["build", "init", "render"]
 
-    public listenerInstances = ["component"]
+    public instances = ["component"]
 
     public component: typeof component
 
@@ -197,7 +197,7 @@ test("component ssr render init return", (): void => {
   class MyComponent {
     public listeners = ["build", "init", "render"]
 
-    public listenerInstances = ["component"]
+    public instances = ["component"]
 
     public component: typeof component
 
