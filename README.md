@@ -1,4 +1,4 @@
-# component
+# @listener-js/component
 
 Listener web component
 
