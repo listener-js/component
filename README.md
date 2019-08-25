@@ -17,8 +17,6 @@ npm install @listener-js/listener \
 ```tsx
 /** @jsx myComponent.createElement */
 
-import { component } from "@listener-js/component"
-
 export class MyComponent {
   public listeners = ["init", "render"]
   public instances = ["component"]
