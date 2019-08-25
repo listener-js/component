@@ -1,3 +1,4 @@
+import { Listener } from "@listener-js/listener"
 import { store } from "@listener-js/store"
 
 declare global {
@@ -10,13 +11,13 @@ declare global {
 }
 
 export class Component {
-  public instances = ["store.get", "store.set"]
-  public listeners = ["forceRender", "render"]
+  public listeners = ["afterRender", "beforeRender", "force"]
+  public instances = ["store"]
   
-  private get: typeof store.get
-  private set: typeof store.set
-
   private components: Record<string, any> = {}
+  private instanceId: string
+  private listener: Listener
+  private store: typeof store
 
   /**
    * Synthetic event flag.
@@ -116,59 +117,81 @@ export class Component {
 
   public join(instanceId: string, instance: any): void {
     instance.createElement = this.createElement.bind(this)
+
     this.components[instanceId] = instance
+
+    this.listener.listen(
+      [`${instanceId}.render`, "**"],
+      [`${this.instanceId}.beforeRender`],
+      { intercept: true, prepend: true }
+    )
+
+    this.listener.listen(
+      [`${instanceId}.render`, "**"],
+      [`${this.instanceId}.afterRender`],
+      { intercept: true }
+    )
+
+    this.listener.listen(
+      [`${instanceId}.force`, "**"],
+      [`${this.instanceId}.force`],
+      { intercept: true, prepend: true }
+    )
   }
 
-  public forceRender(
+  public force(
     id: string[], ...args: any[]
   ): Element {
     const simpleId = this.simpleId(id)
     const [instanceId] = id[1].split(/\./)
 
-    const existingElement: Element =
-      this.get(id, [...simpleId, "elements"])
+    this.store.delete(id, [...simpleId, "elements"])
+    this.store.delete(id, [...simpleId, "ssrElements"])
     
-    const element = this.components[instanceId].build(
-      id, ...args
-    )
-
-    existingElement.parentNode.replaceChild(
-      element, existingElement
+    const element = this.components[instanceId].render(
+      id.slice(2), ...args
     )
 
     return element
   }
 
-  public render(id: string[], ...args: any[]): Element {
+  public beforeRender(
+    id: string[], ...args: any[]
+  ): Element {
     const simpleId = this.simpleId(id)
     const [instanceId] = id[1].split(/\./)
-    
-    let element: Element =
-      this.get(id, [...simpleId, "elements"])
 
-    if (element !== undefined) {
-      return element
-    }
+    let element: Element =
+      this.store.get(id, [...simpleId, "elements"])
 
     const ssrElement = document.getElementById(
       simpleId.join("-")
     )
 
     if (ssrElement) {
-      this.set(id, [...simpleId, "ssrElements"], ssrElement)
+      this.store.set(id, [...simpleId, "ssrElements"], ssrElement)
     }
 
-    if (this.components[instanceId].init) {
+    if (!element && this.components[instanceId].init) {
       element = this.components[instanceId].init(
         id, ssrElement, ...args
       )
     }
 
-    if (!element) {
-      element = this.components[instanceId].build(
-        id, ...args
-      )
+    if (element) {
+      this.store.set(id, [...simpleId, "elements"], element)
     }
+
+    return element
+  }
+
+  public afterRender(
+    id: string[], element: Element, ...args: any[]
+  ): Element {
+    const simpleId = this.simpleId(id)
+
+    let ssrElement: Element =
+      this.store.get(id, [...simpleId, "ssrElements"])
 
     if (element && ssrElement && element !== ssrElement) {
       ssrElement.parentNode.replaceChild(
@@ -176,7 +199,7 @@ export class Component {
       )
     }
 
-    this.set(id, [...simpleId, "elements"], element)
+    this.store.set(id, [...simpleId, "elements"], element)
 
     return element
   }
@@ -186,10 +209,7 @@ export class Component {
       .reduce((memo, v: string): string[] => {
         const a = v.split(/\./)
         
-        if (
-          a[0] !== "component" &&
-          (!a[1] || a[1] !== "build")
-        ) {
+        if (a[0] !== "component") {
           return memo.concat(a[0])
         }
         

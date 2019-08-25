@@ -1,15 +1,15 @@
 /** @jsx myComponent.createElement */
 
 import { component } from "../"
-import { listener } from "@listener-js/listener"
+import { listener, reset } from "@listener-js/listener"
 import { log } from "@listener-js/log"
 import { store } from "@listener-js/store"
-
-listener({ component, log, store })
 
 beforeEach(() => {
   document.body.innerHTML = ""
   store.state = {}
+  reset()
+  listener({ component, log, store })
 })
 
 test("component", (): void => {
@@ -20,23 +20,16 @@ test("component render", (): void => {
   expect.assertions(5)
 
   class MyComponent {
-    public listeners = ["build", "init", "render"]
-    
+    public listeners = ["init", "render"]
     public instances = ["component"]
-
-    public component: typeof component
 
     public init() {
       expect(1).toBe(1)
     }
 
-    public build(id: string[]): Element {
+    public render(id: string[]): Element {
       expect(1).toBe(1)
       return <div id={id} />
-    }
-
-    public render(id: string[]) {
-      return this.component.render(id)
     }
   }
 
@@ -53,32 +46,25 @@ test("component render", (): void => {
   expect(element2).toBe(element)
 })
 
-test("component forceRender", (): void => {
-  expect.assertions(7)
+test("component force", (): void => {
+  expect.assertions(8)
 
   class MyComponent {
-    public listeners =
-      ["build", "forceRender", "init", "render"]
-
+    public listeners = ["force", "init", "render"]
     public instances = ["component"]
-
-    public component: typeof component
 
     public init() {
       expect(1).toBe(1)
     }
 
-    public build(id: string[]): Element {
+    public force(id: string[]): Element {
+      expect(0).toBe(1)
+      return
+    }
+
+    public render(id: string[]): Element {
       expect(1).toBe(1)
       return <div id={id} />
-    }
-
-    public forceRender(id: string[]) {
-      return this.component.forceRender(id)
-    }
-
-    public render(id: string[]) {
-      return this.component.render(id)
     }
   }
 
@@ -91,7 +77,7 @@ test("component forceRender", (): void => {
   const element = myComponent.render([])
   expect(element).toEqual(expect.any(HTMLDivElement))
 
-  const element2 = myComponent.forceRender([])
+  const element2 = myComponent.force([])
   const element3 = document.getElementById(element.id)
 
   expect(element2).toBe(element3)
@@ -103,36 +89,22 @@ test("nested component render", (): void => {
   expect.assertions(2)
 
   class MyComponent {
-    public listeners = ["build", "render"]
-
+    public listeners = ["render"]
     public instances = ["component"]
 
-    public component: typeof component
-
-    public build(id: string[]): Element {
+    public render(id: string[]): Element {
       return <div id={id}>
         {otherComponent.render(id)}
       </div>
-    }
-
-    public render(id: string[]) {
-      return this.component.render(id)
     }
   }
 
   class OtherComponent {
     public listeners = ["build", "render"]
-    
     public instances = ["component"]
 
-    public component: typeof component
-
-    public build(id: string[]): Element {
+    public render(id: string[]): Element {
       return <div id={id} />
-    }
-
-    public render(id: string[]) {
-      return this.component.render(id)
     }
   }
 
@@ -152,23 +124,17 @@ test("component ssr render", (): void => {
   expect.assertions(6)
 
   class MyComponent {
-    public listeners = ["build", "init", "render"]
-
+    public listeners = ["init", "render"]
     public instances = ["component"]
-
     public component: typeof component
 
     public init(id: string[], ssrElement: Element) {
       expect(ssrElement).toBe(el)
     }
 
-    public build(id: string[]): Element {
+    public render(id: string[]): Element {
       expect(1).toBe(1)
       return <div id={id} />
-    }
-
-    public render(id: string[]) {
-      return this.component.render(id)
     }
   }
 
@@ -195,24 +161,17 @@ test("component ssr render init return", (): void => {
   expect.assertions(4)
 
   class MyComponent {
-    public listeners = ["build", "init", "render"]
-
+    public listeners = ["init", "render"]
     public instances = ["component"]
-
-    public component: typeof component
 
     public init(id: string[], ssrElement: Element) {
       expect(ssrElement).toBe(el)
       return ssrElement
     }
 
-    public build(id: string[]): Element {
+    public render(id: string[]): Element {
       expect(0).toBe(1) // fail
       return <div id={id} />
-    }
-
-    public render(id: string[]) {
-      return this.component.render(id)
     }
   }
 

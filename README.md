@@ -20,17 +20,14 @@ npm install @listener-js/listener \
 import { component } from "@listener-js/component"
 
 export class MyComponent {
-  public listeners = ["build", "init"]
-
-  public listenerInstances = ["component.render"]
-
-  public render: typeof component.render
+  public listeners = ["init", "render"]
+  public instances = ["component"]
 
   public init(id: string[], ssrElement: Element) {
-    // return element here to prevent build()
+    // return element to prevent render()
   }
 
-  public build(id: string[]): Element {
+  public render(id: string[]): Element {
     return <div id={id} />
   }
 }

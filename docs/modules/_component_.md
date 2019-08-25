@@ -24,4 +24,4 @@
 
 • **component**: *[Component](../classes/_component_.component.md)* =  new Component()
 
-Defined in component.ts:201
+Defined in component.ts:221
