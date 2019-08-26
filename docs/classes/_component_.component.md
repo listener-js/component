@@ -97,7 +97,7 @@ Defined in component.ts:20
 
 ▸ **afterRender**(`id`: string[], `element`: `Element`, ...`args`: any[]): *`Element`*
 
-Defined in component.ts:188
+Defined in component.ts:40
 
 **Parameters:**
 
@@ -115,7 +115,7 @@ ___
 
 ▸ **beforeRender**(`id`: string[], ...`args`: any[]): *`Element`*
 
-Defined in component.ts:158
+Defined in component.ts:59
 
 **Parameters:**
 
@@ -132,7 +132,7 @@ ___
 
 ▸ **createElement**(`tagName`: any): *`Element`*
 
-Defined in component.ts:43
+Defined in component.ts:92
 
 Substitute function for `React.createElement` in JSX.
 
@@ -150,7 +150,7 @@ ___
 
 ▸ **force**(`id`: string[], ...`args`: any[]): *`Element`*
 
-Defined in component.ts:142
+Defined in component.ts:167
 
 **Parameters:**
 
@@ -167,7 +167,7 @@ ___
 
 ▸ **join**(`instanceId`: string, `instance`: any): *void*
 
-Defined in component.ts:118
+Defined in component.ts:183
 
 **Parameters:**
 

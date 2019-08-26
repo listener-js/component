@@ -37,6 +37,55 @@ export class Component {
     value: true,
   }
 
+  public afterRender(
+    id: string[], element: Element, ...args: any[]
+  ): Element {
+    const simpleId = this.simpleId(id)
+
+    let ssrElement: Element =
+      this.store.get(id, [...simpleId, "ssrElements"])
+
+    if (element && ssrElement && element !== ssrElement) {
+      ssrElement.parentNode.replaceChild(
+        element, ssrElement
+      )
+    }
+
+    this.store.set(id, [...simpleId, "elements"], element)
+
+    return element
+  }
+
+  public beforeRender(
+    id: string[], ...args: any[]
+  ): Element {
+    const simpleId = this.simpleId(id)
+    const [instanceId] = id[1].split(/\./)
+
+    let element: Element =
+      this.store.get(id, [...simpleId, "elements"])
+
+    const ssrElement = document.getElementById(
+      simpleId.join("-")
+    )
+
+    if (ssrElement) {
+      this.store.set(id, [...simpleId, "ssrElements"], ssrElement)
+    }
+
+    if (!element && this.components[instanceId].init) {
+      element = this.components[instanceId].init(
+        id, ssrElement, ...args
+      )
+    }
+
+    if (element) {
+      this.store.set(id, [...simpleId, "elements"], element)
+    }
+
+    return element
+  }
+
   /**
    * Substitute function for `React.createElement` in JSX.
    */
@@ -115,6 +164,22 @@ export class Component {
     return node
   }
 
+  public force(
+    id: string[], ...args: any[]
+  ): Element {
+    const simpleId = this.simpleId(id)
+    const [instanceId] = id[1].split(/\./)
+
+    this.store.delete(id, [...simpleId, "elements"])
+    this.store.delete(id, [...simpleId, "ssrElements"])
+
+    const element = this.components[instanceId].render(
+      id.slice(2), ...args
+    )
+
+    return element
+  }
+
   public join(instanceId: string, instance: any): void {
     instance.createElement = this.createElement.bind(this)
 
@@ -137,71 +202,6 @@ export class Component {
       [`${this.instanceId}.force`],
       { intercept: true, prepend: true }
     )
-  }
-
-  public force(
-    id: string[], ...args: any[]
-  ): Element {
-    const simpleId = this.simpleId(id)
-    const [instanceId] = id[1].split(/\./)
-
-    this.store.delete(id, [...simpleId, "elements"])
-    this.store.delete(id, [...simpleId, "ssrElements"])
-    
-    const element = this.components[instanceId].render(
-      id.slice(2), ...args
-    )
-
-    return element
-  }
-
-  public beforeRender(
-    id: string[], ...args: any[]
-  ): Element {
-    const simpleId = this.simpleId(id)
-    const [instanceId] = id[1].split(/\./)
-
-    let element: Element =
-      this.store.get(id, [...simpleId, "elements"])
-
-    const ssrElement = document.getElementById(
-      simpleId.join("-")
-    )
-
-    if (ssrElement) {
-      this.store.set(id, [...simpleId, "ssrElements"], ssrElement)
-    }
-
-    if (!element && this.components[instanceId].init) {
-      element = this.components[instanceId].init(
-        id, ssrElement, ...args
-      )
-    }
-
-    if (element) {
-      this.store.set(id, [...simpleId, "elements"], element)
-    }
-
-    return element
-  }
-
-  public afterRender(
-    id: string[], element: Element, ...args: any[]
-  ): Element {
-    const simpleId = this.simpleId(id)
-
-    let ssrElement: Element =
-      this.store.get(id, [...simpleId, "ssrElements"])
-
-    if (element && ssrElement && element !== ssrElement) {
-      ssrElement.parentNode.replaceChild(
-        element, ssrElement
-      )
-    }
-
-    this.store.set(id, [...simpleId, "elements"], element)
-
-    return element
   }
 
   private simpleId(id: string[]): string[] {
