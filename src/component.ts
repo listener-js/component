@@ -11,9 +11,14 @@ declare global {
 }
 
 export class Component {
-  public listeners = ["afterRender", "beforeRender", "force"]
-  public instances = ["store"]
-  
+  public listeners = [
+    "afterRender",
+    "beforeRender",
+    "force",
+  ]
+
+  public externals = ["store"]
+
   private components: Record<string, any> = {}
   private instanceId: string
   private listener: Listener
@@ -38,16 +43,20 @@ export class Component {
   }
 
   public afterRender(
-    id: string[], element: Element, ...args: any[]
+    id: string[],
+    element: Element
   ): Element {
     const simpleId = this.simpleId(id)
 
-    let ssrElement: Element =
-      this.store.get(id, [...simpleId, "ssrElements"])
+    const ssrElement: Element = this.store.get(id, [
+      ...simpleId,
+      "ssrElements",
+    ])
 
     if (element && ssrElement && element !== ssrElement) {
       ssrElement.parentNode.replaceChild(
-        element, ssrElement
+        element,
+        ssrElement
       )
     }
 
@@ -57,25 +66,34 @@ export class Component {
   }
 
   public beforeRender(
-    id: string[], ...args: any[]
+    id: string[],
+    ...args: any[]
   ): Element {
     const simpleId = this.simpleId(id)
     const [instanceId] = id[1].split(/\./)
 
-    let element: Element =
-      this.store.get(id, [...simpleId, "elements"])
+    let element: Element = this.store.get(id, [
+      ...simpleId,
+      "elements",
+    ])
 
     const ssrElement = document.getElementById(
       simpleId.join("-")
     )
 
     if (ssrElement) {
-      this.store.set(id, [...simpleId, "ssrElements"], ssrElement)
+      this.store.set(
+        id,
+        [...simpleId, "ssrElements"],
+        ssrElement
+      )
     }
 
     if (!element && this.components[instanceId].init) {
       element = this.components[instanceId].init(
-        id, ssrElement, ...args
+        id,
+        ssrElement,
+        ...args
       )
     }
 
@@ -96,6 +114,7 @@ export class Component {
         : document.createElement(tagName)
 
     for (let i = 1; i < arguments.length; ++i) {
+      // eslint-disable-next-line
       const arg = arguments[i]
       if (!arg) {
         continue
@@ -128,7 +147,7 @@ export class Component {
             ) {
               document.addEventListener(
                 key.slice(2).toLowerCase(),
-                function (e): any {
+                function(e): any {
                   let tgt: any = e.target
                   do {
                     if (tgt[key]) {
@@ -164,9 +183,7 @@ export class Component {
     return node
   }
 
-  public force(
-    id: string[], ...args: any[]
-  ): Element {
+  public force(id: string[], ...args: any[]): Element {
     const simpleId = this.simpleId(id)
     const [instanceId] = id[1].split(/\./)
 
@@ -174,47 +191,54 @@ export class Component {
     this.store.delete(id, [...simpleId, "ssrElements"])
 
     const element = this.components[instanceId].render(
-      id.slice(2), ...args
+      id.slice(2),
+      ...args
     )
 
     return element
   }
 
-  public join(instanceId: string, instance: any): void {
+  public listenerJoin(
+    id: string[],
+    instanceId: string,
+    instance: any
+  ): void {
     instance.createElement = this.createElement.bind(this)
 
     this.components[instanceId] = instance
 
     this.listener.listen(
+      id,
       [`${instanceId}.render`, "**"],
-      [`${this.instanceId}.beforeRender`],
+      `${this.instanceId}.beforeRender`,
       { intercept: true, prepend: true }
     )
 
     this.listener.listen(
+      id,
       [`${instanceId}.render`, "**"],
-      [`${this.instanceId}.afterRender`],
+      `${this.instanceId}.afterRender`,
       { intercept: true }
     )
 
     this.listener.listen(
+      id,
       [`${instanceId}.force`, "**"],
-      [`${this.instanceId}.force`],
+      `${this.instanceId}.force`,
       { intercept: true, prepend: true }
     )
   }
 
   private simpleId(id: string[]): string[] {
-    return id
-      .reduce((memo, v: string): string[] => {
-        const a = v.split(/\./)
-        
-        if (a[0] !== "component") {
-          return memo.concat(a[0])
-        }
-        
-        return memo
-      }, [])
+    return id.reduce((memo, v: string): string[] => {
+      const a = v.split(/\./)
+
+      if (a[0] !== "component") {
+        return memo.concat(a[0])
+      }
+
+      return memo
+    }, [])
   }
 }
 
