@@ -9,9 +9,8 @@ import { store } from "@listener-js/store"
 beforeEach((): void => {
   document.body.innerHTML = ""
   store.state = {}
-  reset()
-  listener({ imp, log })
-  listener({ component, store })
+  reset(["beforeEach"])
+  listener(["beforeEach"], { component, imp, log, store })
 })
 
 test("component", (): void => {
@@ -37,7 +36,7 @@ test("component render", async (): Promise<any> => {
 
   const myComponent = new MyComponent()
 
-  listener({ myComponent })
+  listener([], { myComponent })
 
   const element = myComponent.render([])
 
@@ -71,7 +70,7 @@ test("component force", (): void => {
   }
 
   const myComponent = new MyComponent()
-  listener({ myComponent })
+  listener([], { myComponent })
 
   const el = <div id="myComponent" />
   document.body.appendChild(el)
@@ -112,7 +111,7 @@ test("nested component render", (): void => {
   const myComponent = new MyComponent()
   const otherComponent = new OtherComponent()
 
-  listener({ myComponent, otherComponent })
+  listener([], { myComponent, otherComponent })
 
   const element = myComponent.render([]).firstElementChild
 
@@ -140,7 +139,7 @@ test("component ssr render", (): void => {
   }
 
   const myComponent = new MyComponent()
-  listener({ myComponent })
+  listener([], { myComponent })
 
   const el = <div id="myComponent" />
   document.body.appendChild(el)
@@ -179,7 +178,7 @@ test("component ssr render init return", (): void => {
   }
 
   const myComponent = new MyComponent()
-  listener({ myComponent })
+  listener([], { myComponent })
 
   const el = <div id="myComponent" />
   document.body.appendChild(el)
