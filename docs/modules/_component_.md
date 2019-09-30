@@ -11,15 +11,3 @@
 ### Classes
 
 * [Component](../classes/_component_.component.md)
-
-### Variables
-
-* [component](_component_.md#const-component)
-
-## Variables
-
-### `Const` component
-
-• **component**: *[Component](../classes/_component_.component.md)* =  new Component()
-
-Defined in component.ts:245

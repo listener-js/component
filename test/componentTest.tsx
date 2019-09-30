@@ -1,16 +1,16 @@
 /** @jsx myComponent.createElement */
 
-import { component } from "../"
-import { imp } from "@listener-js/imp"
-import { listener, reset } from "@listener-js/listener"
-import { log } from "@listener-js/log"
-import { store } from "@listener-js/store"
+import component from "../"
+import join from "@listener-js/join"
+import { load, reset } from "@listener-js/listener"
+import log from "@listener-js/log"
+import store from "@listener-js/store"
 
 beforeEach((): void => {
   document.body.innerHTML = ""
   store.state = {}
   reset(["beforeEach"])
-  listener(["beforeEach"], { component, imp, log, store })
+  load(["beforeEach"], { component, join, log, store })
 })
 
 test("component", (): void => {
@@ -21,22 +21,23 @@ test("component render", async (): Promise<any> => {
   expect.assertions(5)
 
   class MyComponent {
-    public listeners = ["init", "render"]
-    public externals = ["component"]
-
-    public init(): void {
+    public init(lid: string[]): void {
       expect(1).toBe(1)
     }
 
-    public render(id: string[]): Element {
+    public render(lid: string[]): Element {
       expect(1).toBe(1)
-      return <div id={id} />
+      return <div id={lid} />
+    }
+
+    private listenerJoin(): string[][] {
+      return [["component"]]
     }
   }
 
   const myComponent = new MyComponent()
 
-  listener([], { myComponent })
+  load([], { myComponent })
 
   const element = myComponent.render([])
 
@@ -51,26 +52,27 @@ test("component force", (): void => {
   expect.assertions(8)
 
   class MyComponent {
-    public listeners = ["force", "init", "render"]
-    public externals = ["component"]
-
-    public init(): void {
+    public init(lid: string[]): void {
       expect(1).toBe(1)
     }
 
-    public force(): Element {
+    public force(lid: string[]): Element {
       expect(0).toBe(1)
       return
     }
 
-    public render(id: string[]): Element {
+    public render(lid: string[]): Element {
       expect(1).toBe(1)
-      return <div id={id} />
+      return <div id={lid} />
+    }
+
+    private listenerJoin(): string[][] {
+      return [["component"]]
     }
   }
 
   const myComponent = new MyComponent()
-  listener([], { myComponent })
+  load([], { myComponent })
 
   const el = <div id="myComponent" />
   document.body.appendChild(el)
@@ -78,7 +80,7 @@ test("component force", (): void => {
   const element = myComponent.render([])
   expect(element).toEqual(expect.any(HTMLDivElement))
 
-  const element2 = myComponent.force()
+  const element2 = myComponent.force([])
   const element3 = document.getElementById(element.id)
 
   expect(element2).toBe(element3)
@@ -90,28 +92,30 @@ test("nested component render", (): void => {
   expect.assertions(2)
 
   class MyComponent {
-    public listeners = ["render"]
-    public externals = ["component"]
-
-    public render(id: string[]): Element {
+    public render(lid: string[]): Element {
       // eslint-disable-next-line
-      return <div id={id}>{otherComponent.render(id)}</div>
+      return <div id={lid}>{otherComponent.render(lid)}</div>
+    }
+
+    private listenerJoin(lid: string[]): string[][] {
+      return [["component"]]
     }
   }
 
   class OtherComponent {
-    public listeners = ["build", "render"]
-    public externals = ["component"]
+    public render(lid: string[]): Element {
+      return <div id={lid} />
+    }
 
-    public render(id: string[]): Element {
-      return <div id={id} />
+    private listenerJoin(lid: string[]): string[][] {
+      return [["component"]]
     }
   }
 
   const myComponent = new MyComponent()
   const otherComponent = new OtherComponent()
 
-  listener([], { myComponent, otherComponent })
+  load([], { myComponent, otherComponent })
 
   const element = myComponent.render([]).firstElementChild
 
@@ -123,23 +127,23 @@ test("component ssr render", (): void => {
   expect.assertions(6)
 
   class MyComponent {
-    public listeners = ["init", "render"]
-    public externals = ["component"]
-    public component: typeof component
-
-    public init(id: string[], ssrElement: Element): void {
+    public init(lid: string[], ssrElement: Element): void {
       // eslint-disable-next-line
       expect(ssrElement).toBe(el)
     }
 
-    public render(id: string[]): Element {
+    public render(lid: string[]): Element {
       expect(1).toBe(1)
-      return <div id={id} />
+      return <div id={lid} />
+    }
+
+    private listenerJoin(lid: string[]): string[][] {
+      return [["component"]]
     }
   }
 
   const myComponent = new MyComponent()
-  listener([], { myComponent })
+  load([], { myComponent })
 
   const el = <div id="myComponent" />
   document.body.appendChild(el)
@@ -159,11 +163,8 @@ test("component ssr render init return", (): void => {
   expect.assertions(4)
 
   class MyComponent {
-    public listeners = ["init", "render"]
-    public externals = ["component"]
-
     public init(
-      id: string[],
+      lid: string[],
       ssrElement: Element
     ): Element {
       // eslint-disable-next-line
@@ -171,14 +172,18 @@ test("component ssr render init return", (): void => {
       return ssrElement
     }
 
-    public render(id: string[]): Element {
+    public render(lid: string[]): Element {
       expect(0).toBe(1) // fail
-      return <div id={id} />
+      return <div id={lid} />
+    }
+
+    private listenerJoin(lid: string[]): string[][] {
+      return [["component"]]
     }
   }
 
   const myComponent = new MyComponent()
-  listener([], { myComponent })
+  load([], { myComponent })
 
   const el = <div id="myComponent" />
   document.body.appendChild(el)

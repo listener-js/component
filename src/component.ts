@@ -1,5 +1,9 @@
-import { Listener } from "@listener-js/listener"
-import { store } from "@listener-js/store"
+import {
+  Listener,
+  ListenerBind,
+} from "@listener-js/listener"
+
+import store from "@listener-js/store"
 
 declare global {
   // eslint-disable-next-line
@@ -11,17 +15,7 @@ declare global {
 }
 
 export class Component {
-  public listeners = [
-    "afterRender",
-    "beforeRender",
-    "force",
-  ]
-
-  public externals = ["store"]
-
   private components: Record<string, any> = {}
-  private instanceId: string
-  private listener: Listener
   private store: typeof store
 
   /**
@@ -43,12 +37,12 @@ export class Component {
   }
 
   public afterRender(
-    id: string[],
+    lid: string[],
     element: Element
   ): Element {
-    const simpleId = this.simpleId(id)
+    const simpleId = this.simpleId(lid)
 
-    const ssrElement: Element = this.store.get(id, [
+    const ssrElement: Element = this.store.get(lid, [
       ...simpleId,
       "ssrElements",
     ])
@@ -60,19 +54,19 @@ export class Component {
       )
     }
 
-    this.store.set(id, [...simpleId, "elements"], element)
+    this.store.set(lid, [...simpleId, "elements"], element)
 
     return element
   }
 
   public beforeRender(
-    id: string[],
+    lid: string[],
     ...args: any[]
   ): Element {
-    const simpleId = this.simpleId(id)
-    const [instanceId] = id[1].split(/\./)
+    const simpleId = this.simpleId(lid)
+    const [instanceId] = lid[1].split(/\./)
 
-    let element: Element = this.store.get(id, [
+    let element: Element = this.store.get(lid, [
       ...simpleId,
       "elements",
     ])
@@ -83,7 +77,7 @@ export class Component {
 
     if (ssrElement) {
       this.store.set(
-        id,
+        lid,
         [...simpleId, "ssrElements"],
         ssrElement
       )
@@ -91,14 +85,18 @@ export class Component {
 
     if (!element && this.components[instanceId].init) {
       element = this.components[instanceId].init(
-        id,
+        lid,
         ssrElement,
         ...args
       )
     }
 
     if (element) {
-      this.store.set(id, [...simpleId, "elements"], element)
+      this.store.set(
+        lid,
+        [...simpleId, "elements"],
+        element
+      )
     }
 
     return element
@@ -183,50 +181,81 @@ export class Component {
     return node
   }
 
-  public force(id: string[], ...args: any[]): Element {
-    const simpleId = this.simpleId(id)
-    const [instanceId] = id[1].split(/\./)
+  public force(lid: string[], ...args: any[]): Element {
+    const simpleId = this.simpleId(lid)
+    const [instanceId] = lid[1].split(/\./)
 
-    this.store.delete(id, [...simpleId, "elements"])
-    this.store.delete(id, [...simpleId, "ssrElements"])
+    this.store.delete(lid, [...simpleId, "elements"])
+    this.store.delete(lid, [...simpleId, "ssrElements"])
 
     const element = this.components[instanceId].render(
-      id.slice(2),
+      lid.slice(2),
       ...args
     )
 
     return element
   }
 
-  public listenerJoin(
-    id: string[],
+  private listenerBind(
+    lid: string[],
+    instanceId: string
+  ): ListenerBind {
+    return [
+      [
+        ["join.instanceJoined", instanceId, "**"],
+        `${instanceId}.listenerJoined`,
+      ],
+      [
+        ["listener.reset", "**"],
+        `${instanceId}.listenerReset`,
+        { prepend: true },
+      ],
+    ]
+  }
+
+  private listenerJoin(): string[][] {
+    return [["store"]]
+  }
+
+  private listenerJoined(
+    lid: string[],
     instanceId: string,
-    instance: any
+    instance: any,
+    joinInstanceId: string,
+    joinInstance: any,
+    listener: Listener
   ): void {
-    instance.createElement = this.createElement.bind(this)
+    joinInstance.createElement = this.createElement.bind(
+      this
+    )
 
-    this.components[instanceId] = instance
+    this.components[joinInstanceId] = joinInstance
 
-    this.listener.listen(
-      id,
-      [`${instanceId}.render`, "**"],
-      `${this.instanceId}.beforeRender`,
+    listener.bind(
+      lid,
+      [`${joinInstanceId}.render`, "**"],
+      `${instanceId}.beforeRender`,
       { intercept: true, prepend: true }
     )
 
-    this.listener.listen(
-      id,
-      [`${instanceId}.render`, "**"],
-      `${this.instanceId}.afterRender`,
+    listener.bind(
+      lid,
+      [`${joinInstanceId}.render`, "**"],
+      `${instanceId}.afterRender`,
       { intercept: true }
     )
 
-    this.listener.listen(
-      id,
-      [`${instanceId}.force`, "**"],
-      `${this.instanceId}.force`,
+    listener.bind(
+      lid,
+      [`${joinInstanceId}.force`, "**"],
+      `${instanceId}.force`,
       { intercept: true, prepend: true }
     )
+  }
+
+  private listenerReset(): void {
+    this.components = {}
+    delete this.store
   }
 
   private simpleId(id: string[]): string[] {
@@ -242,4 +271,4 @@ export class Component {
   }
 }
 
-export const component = new Component()
+export default new Component()
