@@ -11,10 +11,10 @@
   "main": "dist/component.js",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com//component.git"
+    "url": "git+ssh://git@github.com/listener-js/component.git"
   },
   "license": "MIT",
-  "homepage": "https://github.com//component#readme",
+  "homepage": "https://github.com/listener-js/component#readme",
   "scripts": {
     "fix": "npm run lint -- --fix",
     "lint": "eslint --ignore-path .gitignore --ext=js .",
