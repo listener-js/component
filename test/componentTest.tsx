@@ -1,7 +1,7 @@
 /** @jsx myComponent.createElement */
 
 import component from "../"
-import join from "@listener-js/join"
+import join, { ListenerJoins } from "@listener-js/join"
 import { load, reset } from "@listener-js/listener"
 import log from "@listener-js/log"
 import store from "@listener-js/store"
@@ -30,8 +30,8 @@ test("component render", async (): Promise<any> => {
       return <div id={lid} />
     }
 
-    private listenerJoin(): string[][] {
-      return [["component"]]
+    private listenerJoins(lid: string[]): ListenerJoins {
+      return [[["component"]]]
     }
   }
 
@@ -66,8 +66,8 @@ test("component force", (): void => {
       return <div id={lid} />
     }
 
-    private listenerJoin(): string[][] {
-      return [["component"]]
+    private listenerJoins(lid: string[]): ListenerJoins {
+      return [[["component"]]]
     }
   }
 
@@ -97,8 +97,8 @@ test("nested component render", (): void => {
       return <div id={lid}>{otherComponent.render(lid)}</div>
     }
 
-    private listenerJoin(lid: string[]): string[][] {
-      return [["component"]]
+    private listenerJoins(lid: string[]): ListenerJoins {
+      return [[["component"]]]
     }
   }
 
@@ -107,8 +107,8 @@ test("nested component render", (): void => {
       return <div id={lid} />
     }
 
-    private listenerJoin(lid: string[]): string[][] {
-      return [["component"]]
+    private listenerJoins(lid: string[]): ListenerJoins {
+      return [[["component"]]]
     }
   }
 
@@ -137,8 +137,8 @@ test("component ssr render", (): void => {
       return <div id={lid} />
     }
 
-    private listenerJoin(lid: string[]): string[][] {
-      return [["component"]]
+    private listenerJoins(lid: string[]): ListenerJoins {
+      return [[["component"]]]
     }
   }
 
@@ -177,8 +177,8 @@ test("component ssr render init return", (): void => {
       return <div id={lid} />
     }
 
-    private listenerJoin(lid: string[]): string[][] {
-      return [["component"]]
+    private listenerJoins(lid: string[]): ListenerJoins {
+      return [[["component"]]]
     }
   }
 

@@ -1,7 +1,9 @@
 import {
   Listener,
-  ListenerBind,
+  ListenerBindings,
 } from "@listener-js/listener"
+
+import { ListenerJoins } from "@listener-js/join"
 
 import store from "@listener-js/store"
 
@@ -196,10 +198,10 @@ export class Component {
     return element
   }
 
-  private listenerBind(
+  private listenerBindings(
     lid: string[],
     instanceId: string
-  ): ListenerBind {
+  ): ListenerBindings {
     return [
       [
         ["join.instanceJoined", instanceId, "**"],
@@ -213,17 +215,17 @@ export class Component {
     ]
   }
 
-  private listenerJoin(): string[][] {
-    return [["store"]]
+  private listenerJoins(lid: string[]): ListenerJoins {
+    return [[["store"]]]
   }
 
   private listenerJoined(
     lid: string[],
+    listener: Listener,
     instanceId: string,
     instance: any,
     joinInstanceId: string,
-    joinInstance: any,
-    listener: Listener
+    joinInstance: any
   ): void {
     joinInstance.createElement = this.createElement.bind(
       this
