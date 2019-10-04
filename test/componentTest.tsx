@@ -2,7 +2,11 @@
 
 import component from "../"
 import join, { ListenerJoins } from "@listener-js/join"
-import { load, reset } from "@listener-js/listener"
+import {
+  instance,
+  load,
+  reset,
+} from "@listener-js/listener"
 import log from "@listener-js/log"
 import store from "@listener-js/store"
 
@@ -28,10 +32,6 @@ test("component render", async (): Promise<any> => {
     public render(lid: string[]): Element {
       expect(1).toBe(1)
       return <div id={lid} />
-    }
-
-    private listenerJoins(lid: string[]): ListenerJoins {
-      return [[["component"]]]
     }
   }
 
@@ -65,10 +65,6 @@ test("component force", (): void => {
       expect(1).toBe(1)
       return <div id={lid} />
     }
-
-    private listenerJoins(lid: string[]): ListenerJoins {
-      return [[["component"]]]
-    }
   }
 
   const myComponent = new MyComponent()
@@ -95,10 +91,6 @@ test("nested component render", (): void => {
     public render(lid: string[]): Element {
       // eslint-disable-next-line
       return <div id={lid}>{otherComponent.render(lid)}</div>
-    }
-
-    private listenerJoins(lid: string[]): ListenerJoins {
-      return [[["component"]]]
     }
   }
 
@@ -136,10 +128,6 @@ test("component ssr render", (): void => {
       expect(1).toBe(1)
       return <div id={lid} />
     }
-
-    private listenerJoins(lid: string[]): ListenerJoins {
-      return [[["component"]]]
-    }
   }
 
   const myComponent = new MyComponent()
@@ -175,10 +163,6 @@ test("component ssr render init return", (): void => {
     public render(lid: string[]): Element {
       expect(0).toBe(1) // fail
       return <div id={lid} />
-    }
-
-    private listenerJoins(lid: string[]): ListenerJoins {
-      return [[["component"]]]
     }
   }
 

@@ -25,12 +25,12 @@
     "docs": "typedoc --out docs --media media --theme markdown src/*.ts"
   },
   "devDependencies": {
-    "@listener-js/join": "1.4.0",
-    "@listener-js/listener": "2.18.0",
-    "@listener-js/log": "1.29.0",
-    "@listener-js/store": "0.8.1",
+    "@listener-js/join": "1.6.0",
+    "@listener-js/listener": "2.21.0",
+    "@listener-js/log": "1.30.0",
+    "@listener-js/store": "0.9.0",
     "@types/jest": "24.0.18",
-    "@types/node": "12.7.10",
+    "@types/node": "12.7.11",
     "@typescript-eslint/eslint-plugin": "2.3.2",
     "@typescript-eslint/parser": "2.3.2",
     "eslint": "6.5.1",
