@@ -203,36 +203,28 @@ export class Component {
     return element
   }
 
-  private applyCallbacksBindings(
+  private addCallbackBindings(
     lid: string[],
-    listener: Listener,
-    instances: Record<string, any>,
-    options?: Record<string, any>
-  ): void | Promise<any> {
-    if (
-      options &&
-      options.reload === true &&
-      Object.values(instances).indexOf(this) < 0
-    ) {
-      return
+    value: ListenerBindings,
+    { instance }: ListenerEvent
+  ): ListenerBindings {
+    const bindings: ListenerBindings = value
+      ? value.slice(0)
+      : []
+
+    if (instance === this) {
+      return bindings
     }
 
-    for (const instanceId in instances) {
-      const instance = instances[instanceId]
-
-      if (instance === this) {
-        continue
-      }
-
-      if (instance.render) {
-        listener.bind(
-          lid,
-          ["join.listenerJoins", instanceId, "**"],
-          `${this.id}.componentJoins`,
-          { append: true, return: true }
-        )
-      }
+    if (instance.render) {
+      bindings.push([
+        ["join.listenerJoins", instance.id, "**"],
+        `${this.id}.componentJoins`,
+        { return: true },
+      ])
     }
+
+    return bindings
   }
 
   private componentJoins(lid: string[]): ListenerJoins {
@@ -241,13 +233,13 @@ export class Component {
 
   private listenerBindings(
     lid: string[],
-    { instance, listener }: ListenerEvent
+    { listener }: ListenerEvent
   ): ListenerBindings {
     return [
       [
-        [`${listener.id}.load`, "**"],
-        `${instance.id}.applyCallbacksBindings`,
-        { listener: true, prepend: true },
+        [`${listener.id}.listenerBindings`, "**"],
+        `${this.id}.addCallbackBindings`,
+        { intercept: true },
       ],
     ]
   }

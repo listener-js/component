@@ -17,8 +17,8 @@
 
 ### Methods
 
+* [addCallbackBindings](_component_.component.md#private-addcallbackbindings)
 * [afterRender](_component_.component.md#afterrender)
-* [applyCallbacksBindings](_component_.component.md#private-applycallbacksbindings)
 * [beforeRender](_component_.component.md#beforerender)
 * [componentJoins](_component_.component.md#private-componentjoins)
 * [createElement](_component_.component.md#createelement)
@@ -69,6 +69,28 @@ Defined in component.ts:26
 
 ## Methods
 
+### `Private` addCallbackBindings
+
+▸ **addCallbackBindings**(`lid`: string[], `value`: ListenerBindings, `__namedParameters`: object): *ListenerBindings*
+
+Defined in component.ts:206
+
+**Parameters:**
+
+▪ **lid**: *string[]*
+
+▪ **value**: *ListenerBindings*
+
+▪ **__namedParameters**: *object*
+
+Name | Type |
+------ | ------ |
+`instance` | any |
+
+**Returns:** *ListenerBindings*
+
+___
+
 ###  afterRender
 
 ▸ **afterRender**(`lid`: string[], `element`: Element): *Element*
@@ -83,25 +105,6 @@ Name | Type |
 `element` | Element |
 
 **Returns:** *Element*
-
-___
-
-### `Private` applyCallbacksBindings
-
-▸ **applyCallbacksBindings**(`lid`: string[], `listener`: Listener, `instances`: Record‹string, any›, `options?`: Record‹string, any›): *void | Promise‹any›*
-
-Defined in component.ts:206
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`lid` | string[] |
-`listener` | Listener |
-`instances` | Record‹string, any› |
-`options?` | Record‹string, any› |
-
-**Returns:** *void | Promise‹any›*
 
 ___
 
@@ -126,7 +129,7 @@ ___
 
 ▸ **componentJoins**(`lid`: string[]): *ListenerJoins*
 
-Defined in component.ts:238
+Defined in component.ts:230
 
 **Parameters:**
 
@@ -177,7 +180,7 @@ ___
 
 ▸ **listenerBindings**(`lid`: string[], `__namedParameters`: object): *ListenerBindings*
 
-Defined in component.ts:242
+Defined in component.ts:234
 
 **Parameters:**
 
@@ -187,7 +190,6 @@ Defined in component.ts:242
 
 Name | Type |
 ------ | ------ |
-`instance` | any |
 `listener` | Listener |
 
 **Returns:** *ListenerBindings*
@@ -198,7 +200,7 @@ ___
 
 ▸ **listenerJoined**(`lid`: string[], `__namedParameters`: object): *void*
 
-Defined in component.ts:259
+Defined in component.ts:251
 
 **Parameters:**
 
@@ -220,7 +222,7 @@ ___
 
 ▸ **listenerJoins**(`lid`: string[]): *ListenerJoins*
 
-Defined in component.ts:255
+Defined in component.ts:247
 
 **Parameters:**
 
@@ -236,7 +238,7 @@ ___
 
 ▸ **listenerReset**(): *void*
 
-Defined in component.ts:291
+Defined in component.ts:283
 
 **Returns:** *void*
 
@@ -246,7 +248,7 @@ ___
 
 ▸ **simpleId**(`id`: string[]): *string[]*
 
-Defined in component.ts:296
+Defined in component.ts:288
 
 **Parameters:**
 
