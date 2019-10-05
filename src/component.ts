@@ -203,45 +203,33 @@ export class Component {
     return element
   }
 
-  private addCallbackBindings(
+  private componentJoins(
     lid: string[],
-    value: ListenerBindings,
+    value: ListenerJoins = []
+  ): ListenerJoins {
+    return value.concat([[["component"]]])
+  }
+
+  private listenerExtendBindings(
+    lid: string[],
+    value: ListenerBindings = [],
     { instance }: ListenerEvent
   ): ListenerBindings {
-    const bindings: ListenerBindings = value
-      ? value.slice(0)
-      : []
-
     if (instance === this) {
-      return bindings
+      return value
     }
+
+    const bindings: ListenerBindings = value.slice(0)
 
     if (instance.render) {
       bindings.push([
         ["join.listenerJoins", instance.id, "**"],
         `${this.id}.componentJoins`,
-        { return: true },
+        { intercept: true },
       ])
     }
 
     return bindings
-  }
-
-  private componentJoins(lid: string[]): ListenerJoins {
-    return [[["component"]]]
-  }
-
-  private listenerBindings(
-    lid: string[],
-    { listener }: ListenerEvent
-  ): ListenerBindings {
-    return [
-      [
-        [`${listener.id}.listenerBindings`, "**"],
-        `${this.id}.addCallbackBindings`,
-        { intercept: true },
-      ],
-    ]
   }
 
   private listenerJoins(lid: string[]): ListenerJoins {
