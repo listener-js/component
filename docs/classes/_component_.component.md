@@ -13,18 +13,18 @@
 * [components](_component_.component.md#private-components)
 * [events](_component_.component.md#private-events)
 * [id](_component_.component.md#private-id)
+* [join](_component_.component.md#private-join)
 * [store](_component_.component.md#private-store)
 
 ### Methods
 
 * [afterRender](_component_.component.md#afterrender)
 * [beforeRender](_component_.component.md#beforerender)
-* [componentJoins](_component_.component.md#private-componentjoins)
 * [createElement](_component_.component.md#createelement)
 * [force](_component_.component.md#force)
-* [listenerExtendBindings](_component_.component.md#private-listenerextendbindings)
 * [listenerJoined](_component_.component.md#private-listenerjoined)
-* [listenerJoins](_component_.component.md#private-listenerjoins)
+* [listenerLoaded](_component_.component.md#private-listenerloaded)
+* [listenerLoadedAny](_component_.component.md#private-listenerloadedany)
 * [listenerReset](_component_.component.md#private-listenerreset)
 * [simpleId](_component_.component.md#private-simpleid)
 
@@ -38,7 +38,7 @@
 
 • **components**: *Record‹string, any›*
 
-Defined in component.ts:25
+Defined in component.ts:21
 
 ___
 
@@ -46,7 +46,7 @@ ___
 
 • **events**: *Record‹string, boolean›*
 
-Defined in component.ts:31
+Defined in component.ts:28
 
 Synthetic event flag.
 
@@ -56,7 +56,15 @@ ___
 
 • **id**: *string*
 
-Defined in component.ts:24
+Defined in component.ts:20
+
+___
+
+### `Private` join
+
+• **join**: *ListenerJoin*
+
+Defined in component.ts:22
 
 ___
 
@@ -64,7 +72,7 @@ ___
 
 • **store**: *Store*
 
-Defined in component.ts:26
+Defined in component.ts:23
 
 ## Methods
 
@@ -72,7 +80,7 @@ Defined in component.ts:26
 
 ▸ **afterRender**(`lid`: string[], `element`: Element): *Element*
 
-Defined in component.ts:46
+Defined in component.ts:43
 
 **Parameters:**
 
@@ -89,7 +97,7 @@ ___
 
 ▸ **beforeRender**(`lid`: string[], ...`args`: any[]): *Element*
 
-Defined in component.ts:69
+Defined in component.ts:66
 
 **Parameters:**
 
@@ -102,28 +110,11 @@ Name | Type |
 
 ___
 
-### `Private` componentJoins
-
-▸ **componentJoins**(`lid`: string[], `value`: ListenerJoins): *ListenerJoins*
-
-Defined in component.ts:206
-
-**Parameters:**
-
-Name | Type | Default |
------- | ------ | ------ |
-`lid` | string[] | - |
-`value` | ListenerJoins |  [] |
-
-**Returns:** *ListenerJoins*
-
-___
-
 ###  createElement
 
 ▸ **createElement**(`tagName`: any): *Element*
 
-Defined in component.ts:115
+Defined in component.ts:112
 
 Substitute function for `React.createElement` in JSX.
 
@@ -141,7 +132,7 @@ ___
 
 ▸ **force**(`lid`: string[], ...`args`: any[]): *Element*
 
-Defined in component.ts:191
+Defined in component.ts:188
 
 **Parameters:**
 
@@ -154,63 +145,60 @@ Name | Type |
 
 ___
 
-### `Private` listenerExtendBindings
-
-▸ **listenerExtendBindings**(`lid`: string[], `value`: ListenerBindings, `__namedParameters`: object): *ListenerBindings*
-
-Defined in component.ts:213
-
-**Parameters:**
-
-▪ **lid**: *string[]*
-
-▪`Default value`  **value**: *ListenerBindings*=  []
-
-▪ **__namedParameters**: *object*
-
-Name | Type |
------- | ------ |
-`instance` | any |
-
-**Returns:** *ListenerBindings*
-
-___
-
 ### `Private` listenerJoined
 
-▸ **listenerJoined**(`lid`: string[], `__namedParameters`: object): *void*
+▸ **listenerJoined**(`lid`: string[], `event`: ListenerJoinEvent): *void*
 
-Defined in component.ts:239
-
-**Parameters:**
-
-▪ **lid**: *string[]*
-
-▪ **__namedParameters**: *object*
-
-Name | Type |
------- | ------ |
-`instance` | any |
-`joinInstance` | any |
-`listener` | Listener |
-
-**Returns:** *void*
-
-___
-
-### `Private` listenerJoins
-
-▸ **listenerJoins**(`lid`: string[]): *ListenerJoins*
-
-Defined in component.ts:235
+Defined in component.ts:223
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
 `lid` | string[] |
+`event` | ListenerJoinEvent |
 
-**Returns:** *ListenerJoins*
+**Returns:** *void*
+
+___
+
+### `Private` listenerLoaded
+
+▸ **listenerLoaded**(`lid`: string[], `__namedParameters`: object): *void*
+
+Defined in component.ts:203
+
+**Parameters:**
+
+▪ **lid**: *string[]*
+
+▪ **__namedParameters**: *object*
+
+Name | Type |
+------ | ------ |
+`instance` | any |
+
+**Returns:** *void*
+
+___
+
+### `Private` listenerLoadedAny
+
+▸ **listenerLoadedAny**(`lid`: string[], `__namedParameters`: object): *void*
+
+Defined in component.ts:210
+
+**Parameters:**
+
+▪ **lid**: *string[]*
+
+▪ **__namedParameters**: *object*
+
+Name | Type |
+------ | ------ |
+`instance` | any |
+
+**Returns:** *void*
 
 ___
 
@@ -218,7 +206,7 @@ ___
 
 ▸ **listenerReset**(): *void*
 
-Defined in component.ts:271
+Defined in component.ts:260
 
 **Returns:** *void*
 
@@ -228,7 +216,7 @@ ___
 
 ▸ **simpleId**(`id`: string[]): *string[]*
 
-Defined in component.ts:276
+Defined in component.ts:266
 
 **Parameters:**
 
@@ -244,7 +232,7 @@ Name | Type |
 
 ### ▪ **htmlProps**: *object*
 
-Defined in component.ts:36
+Defined in component.ts:33
 
 Dom element props.
 
@@ -252,40 +240,40 @@ Dom element props.
 
 • **className**: *boolean* = true
 
-Defined in component.ts:37
+Defined in component.ts:34
 
 ###  id
 
 • **id**: *boolean* = true
 
-Defined in component.ts:38
+Defined in component.ts:35
 
 ###  innerHTML
 
 • **innerHTML**: *boolean* = true
 
-Defined in component.ts:39
+Defined in component.ts:36
 
 ###  nodeValue
 
 • **nodeValue**: *boolean* = true
 
-Defined in component.ts:40
+Defined in component.ts:37
 
 ###  tabIndex
 
 • **tabIndex**: *boolean* = true
 
-Defined in component.ts:41
+Defined in component.ts:38
 
 ###  textContent
 
 • **textContent**: *boolean* = true
 
-Defined in component.ts:42
+Defined in component.ts:39
 
 ###  value
 
 • **value**: *boolean* = true
 
-Defined in component.ts:43
+Defined in component.ts:40

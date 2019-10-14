@@ -10,9 +10,16 @@ import {
 import log from "@listener-js/log"
 import store from "@listener-js/store"
 
+function delay(t: number, v?: any): Promise<any> {
+  return new Promise((resolve): void => {
+    setTimeout(resolve.bind(null, v), t)
+  })
+}
+
 beforeEach((): void => {
   document.body.innerHTML = ""
   store.state = {}
+
   reset(["beforeEach"])
   load(["beforeEach"], { component, join, log, store })
 })
@@ -46,6 +53,30 @@ test("component render", async (): Promise<any> => {
 
   const element2 = myComponent.render([])
   expect(element2).toBe(element)
+})
+
+test("async component render", async (): Promise<any> => {
+  expect.assertions(4)
+
+  class MyComponent {
+    public init(lid: string[]): void {
+      expect(1).toBe(1)
+    }
+
+    public render(lid: string[]): Promise<Element> {
+      expect(1).toBe(1)
+      return delay(1, <div id={lid} />)
+    }
+  }
+
+  const myComponent = new MyComponent()
+
+  load([], { myComponent })
+
+  return myComponent.render([]).then(element => {
+    expect(element).toEqual(expect.any(HTMLDivElement))
+    expect(element.id).toBe("myComponent")
+  })
 })
 
 test("component force", (): void => {

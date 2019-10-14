@@ -1,13 +1,9 @@
 import {
-  Listener,
-  ListenerBindings,
-  ListenerEvent,
-} from "@listener-js/listener"
-
-import {
-  ListenerJoins,
+  ListenerJoin,
   ListenerJoinEvent,
 } from "@listener-js/join"
+
+import { ListenerEvent } from "@listener-js/listener"
 
 import store from "@listener-js/store"
 
@@ -23,6 +19,7 @@ declare global {
 export class Component {
   private id: string
   private components: Record<string, any> = {}
+  private join: ListenerJoin
   private store: typeof store
 
   /**
@@ -203,43 +200,32 @@ export class Component {
     return element
   }
 
-  private componentJoins(
+  private listenerLoaded(
     lid: string[],
-    value: ListenerJoins = []
-  ): ListenerJoins {
-    return value.concat([[["component"]]])
+    { instance }: ListenerEvent
+  ): void {
+    this.join(lid, instance.id, [["store"]])
   }
 
-  private listenerExtendBindings(
+  private listenerLoadedAny(
     lid: string[],
-    value: ListenerBindings = [],
     { instance }: ListenerEvent
-  ): ListenerBindings {
+  ): void {
     if (instance === this) {
-      return value
+      return
     }
-
-    const bindings: ListenerBindings = value.slice(0)
 
     if (instance.render) {
-      bindings.push([
-        ["join.listenerJoins", instance.id, "**"],
-        `${this.id}.componentJoins`,
-        { intercept: true },
-      ])
+      this.join(lid, instance.id, [["component"]])
     }
-
-    return bindings
-  }
-
-  private listenerJoins(lid: string[]): ListenerJoins {
-    return [[["store"]]]
   }
 
   private listenerJoined(
     lid: string[],
-    { listener, instance, joinInstance }: ListenerJoinEvent
+    event: ListenerJoinEvent
   ): void {
+    const { listener, instance, joinInstance } = event
+
     joinInstance.createElement = this.createElement.bind(
       this
     )
@@ -249,27 +235,31 @@ export class Component {
     listener.bind(
       lid,
       [`${joinInstance.id}.render`, "**"],
-      `${instance.id}.beforeRender`,
-      { intercept: true, prepend: true }
+      [
+        `${instance.id}.beforeRender`,
+        { intercept: true, prepend: true },
+      ]
     )
 
     listener.bind(
       lid,
       [`${joinInstance.id}.render`, "**"],
-      `${instance.id}.afterRender`,
-      { intercept: true }
+      [`${instance.id}.afterRender`, { intercept: true }]
     )
 
     listener.bind(
       lid,
       [`${joinInstance.id}.force`, "**"],
-      `${instance.id}.force`,
-      { intercept: true, prepend: true }
+      [
+        `${instance.id}.force`,
+        { intercept: true, prepend: true },
+      ]
     )
   }
 
   private listenerReset(): void {
     this.components = {}
+    delete this.join
     delete this.store
   }
 
