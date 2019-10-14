@@ -1,12 +1,15 @@
 /** @jsx myComponent.createElement */
 
 import component from "../"
-import join, { ListenerJoins } from "@listener-js/join"
+
+import join, { ListenerJoin } from "@listener-js/join"
+
 import {
-  instance,
   load,
   reset,
+  ListenerEvent,
 } from "@listener-js/listener"
+
 import log from "@listener-js/log"
 import store from "@listener-js/store"
 
@@ -119,19 +122,28 @@ test("nested component render", (): void => {
   expect.assertions(2)
 
   class MyComponent {
+    private join: ListenerJoin
+    private otherComponent: OtherComponent
+
     public render(lid: string[]): Element {
-      // eslint-disable-next-line
-      return <div id={lid}>{otherComponent.render(lid)}</div>
+      return (
+        <div id={lid}>
+          {this.otherComponent.render(lid)}
+        </div>
+      )
+    }
+
+    private listenerLoaded(
+      lid: string[],
+      { instance }: ListenerEvent
+    ): void {
+      this.join(lid, instance.id, [["otherComponent"]])
     }
   }
 
   class OtherComponent {
     public render(lid: string[]): Element {
       return <div id={lid} />
-    }
-
-    private listenerJoins(lid: string[]): ListenerJoins {
-      return [[["component"]]]
     }
   }
 
