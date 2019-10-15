@@ -137,7 +137,7 @@ test("nested component render", (): void => {
       lid: string[],
       { instance }: ListenerEvent
     ): void {
-      this.join(lid, instance.id, [["otherComponent"]])
+      this.join(lid, instance.id, "otherComponent")
     }
   }
 

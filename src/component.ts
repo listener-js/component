@@ -204,7 +204,7 @@ export class Component {
     lid: string[],
     { instance }: ListenerEvent
   ): void {
-    this.join(lid, instance.id, [["store"]])
+    this.join(lid, instance.id, "store")
   }
 
   private listenerLoadedAny(
@@ -216,7 +216,7 @@ export class Component {
     }
 
     if (instance.render) {
-      this.join(lid, instance.id, [["component"]])
+      this.join(lid, instance.id, "component")
     }
   }
 
