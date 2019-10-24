@@ -1,8 +1,8 @@
 /** @jsx myComponent.createElement */
 
-import component from "../"
-
-import join, { ListenerJoin } from "@listener-js/join"
+import expect from "expect"
+import join from "@listener-js/join"
+import component from "../src"
 
 import {
   load,
@@ -27,11 +27,11 @@ beforeEach((): void => {
   load(["beforeEach"], { component, join, log, store })
 })
 
-test("component", (): void => {
+it("component", (): void => {
   expect(component).not.toBeUndefined()
 })
 
-test("component render", async (): Promise<any> => {
+it("component render", async (): Promise<any> => {
   expect.assertions(5)
 
   class MyComponent {
@@ -58,7 +58,7 @@ test("component render", async (): Promise<any> => {
   expect(element2).toBe(element)
 })
 
-test("async component render", async (): Promise<any> => {
+it("async component render", async (): Promise<any> => {
   expect.assertions(4)
 
   class MyComponent {
@@ -82,7 +82,7 @@ test("async component render", async (): Promise<any> => {
   })
 })
 
-test("component force", (): void => {
+it("component force", (): void => {
   expect.assertions(8)
 
   class MyComponent {
@@ -118,11 +118,11 @@ test("component force", (): void => {
   expect(element3).not.toBe(element)
 })
 
-test("nested component render", (): void => {
+it("nested component render", (): void => {
   expect.assertions(2)
 
   class MyComponent {
-    private join: ListenerJoin
+    private join: typeof join.join
     private otherComponent: OtherComponent
 
     public render(lid: string[]): Element {
@@ -158,7 +158,7 @@ test("nested component render", (): void => {
   expect(element.id).toBe("otherComponent-myComponent")
 })
 
-test("component ssr render", (): void => {
+it("component ssr render", (): void => {
   expect.assertions(6)
 
   class MyComponent {
@@ -190,7 +190,7 @@ test("component ssr render", (): void => {
   expect(document.getElementById(element.id)).not.toBe(el)
 })
 
-test("component ssr render init return", (): void => {
+it("component ssr render init return", (): void => {
   expect.assertions(4)
 
   class MyComponent {

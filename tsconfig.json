@@ -1,13 +1,13 @@
 {
   "compileOnSave": true,
-  "compilerOptions": {
-    "allowUnusedLabels": true,
-    "alwaysStrict": true,
-    "declaration": true,
-    "jsx": "react",
-    "module": "commonjs",
-    "outDir": "dist",
-    "sourceMap": true
-  },
-  "include": ["src/**/*.ts"]
+  "extends": "./tsconfig-base.json",
+  "files": [],
+  "references": [
+    {
+      "path": "./src/tsconfig.cjs.json"
+    },
+    {
+      "path": "./src/tsconfig.esm.json"
+    }
+  ]
 }

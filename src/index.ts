@@ -1,10 +1,5 @@
-import {
-  ListenerJoin,
-  ListenerJoinEvent,
-} from "@listener-js/join"
-
+import join, { ListenerJoinEvent } from "@listener-js/join"
 import { ListenerEvent } from "@listener-js/listener"
-
 import store from "@listener-js/store"
 
 declare global {
@@ -17,9 +12,8 @@ declare global {
 }
 
 export class Component {
-  private id: string
   private components: Record<string, any> = {}
-  private join: ListenerJoin
+  private join: typeof join.join
   private store: typeof store
 
   /**

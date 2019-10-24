@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "allowUnusedLabels": true,
+    "alwaysStrict": true,
+    "baseUrl": ".",
+    "declaration": true,
+    "esModuleInterop": true,
+    "jsx": "react",
+    "lib": ["dom", "es6"],
+    "paths": {
+      "@listener-js/join": [
+        "node_modules/@listener-js/join/dist/cjs/index"
+      ],
+      "@listener-js/listener": [
+        "node_modules/@listener-js/listener/dist/cjs/index"
+      ],
+      "@listener-js/store": [
+        "node_modules/@listener-js/store/dist/store"
+      ]
+    },
+    "sourceMap": true
+  }
+}

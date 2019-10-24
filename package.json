@@ -8,7 +8,7 @@
     "component"
   ],
   "author": "Listener <emit@listener.events>",
-  "main": "dist/component.js",
+  "main": "dist/cjs/index.js",
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/listener-js/component.git"
@@ -16,43 +16,39 @@
   "license": "MIT",
   "homepage": "https://github.com/listener-js/component#readme",
   "scripts": {
-    "fix": "npm run lint -- --fix",
-    "lint": "eslint --ignore-path .gitignore --ext=js .",
-    "prepublish": "rm -rf dist; npm run build",
-    "pretty": "prettier --write **/*.css **/*.json **/*.md",
-    "test": "jest",
-    "build": "tsc",
-    "docs": "typedoc --out docs --media media --theme markdown src/*.ts"
+    "build": "rm -rf dist; tsc -b",
+    "release": "./bin/release",
+    "test": "mocha"
   },
   "devDependencies": {
-    "@listener-js/join": "1.11.0",
-    "@listener-js/listener": "3.1.0",
-    "@listener-js/log": "1.32.0",
+    "@listener-js/join": "1.17.0",
+    "@listener-js/listener": "3.17.0",
+    "@listener-js/log": "1.42.0",
     "@listener-js/store": "0.10.0",
-    "@types/jest": "24.0.19",
-    "@types/node": "12.7.12",
-    "@typescript-eslint/eslint-plugin": "2.4.0",
-    "@typescript-eslint/parser": "2.4.0",
+    "@types/mocha": "5.2.7",
+    "@types/node": "12.11.7",
+    "@typescript-eslint/eslint-plugin": "2.5.0",
+    "@typescript-eslint/parser": "2.5.0",
     "eslint": "6.5.1",
     "eslint-config-prettier": "6.4.0",
     "eslint-plugin-prettier": "3.1.1",
+    "expect": "24.9.0",
     "husky": "3.0.9",
-    "jest": "24.9.0",
+    "jsdom": "15.2.0",
+    "jsdom-global": "3.0.2",
     "lint-staged": "9.4.2",
+    "mocha": "6.2.2",
     "prettier": "1.18.2",
-    "ts-jest": "24.1.0",
-    "typedoc": "0.15.0",
-    "typedoc-plugin-markdown": "2.2.10",
+    "release-it": "12.4.3",
+    "rollup": "1.25.2",
+    "semver": "6.3.0",
+    "terser": "4.3.9",
+    "ts-node": "8.4.1",
     "typescript": "3.6.4"
-  },
-  "prettier": {
-    "printWidth": 60,
-    "semi": false,
-    "trailingComma": "es5"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged && npm test && npm run docs && git add docs"
+      "pre-commit": "lint-staged && npm test"
     }
   },
   "lint-staged": {
