@@ -196,8 +196,7 @@ export class Component {
 
   public reset(): void {
     this.components = {}
-    delete this.join
-    delete this.store
+    this.store.reset()
   }
 
   private listenerLoaded(
