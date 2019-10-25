@@ -15,7 +15,7 @@
         "node_modules/@listener-js/listener/dist/cjs/index"
       ],
       "@listener-js/store": [
-        "node_modules/@listener-js/store/dist/store"
+        "node_modules/@listener-js/store/dist/cjs/index"
       ]
     },
     "sourceMap": true
