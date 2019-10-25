@@ -251,7 +251,7 @@ export class Component {
     )
   }
 
-  private listenerReset(): void {
+  private listenerReset(lid: string[]): void {
     this.components = {}
     delete this.join
     delete this.store

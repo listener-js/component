@@ -21,7 +21,6 @@ function delay(t: number, v?: any): Promise<any> {
 
 beforeEach((): void => {
   document.body.innerHTML = ""
-  store.state = {}
 
   reset(["beforeEach"])
   load(["beforeEach"], { component, join, log, store })
