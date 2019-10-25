@@ -194,6 +194,12 @@ export class Component {
     return element
   }
 
+  public reset(): void {
+    this.components = {}
+    delete this.join
+    delete this.store
+  }
+
   private listenerLoaded(
     lid: string[],
     { instance }: ListenerEvent
@@ -252,9 +258,7 @@ export class Component {
   }
 
   private listenerReset(lid: string[]): void {
-    this.components = {}
-    delete this.join
-    delete this.store
+    this.reset()
   }
 
   private simpleId(id: string[]): string[] {
