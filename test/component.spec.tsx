@@ -23,7 +23,7 @@ beforeEach((): void => {
   document.body.innerHTML = ""
 
   reset(["beforeEach"])
-  load(["beforeEach"], { component, join, log, store })
+  load(["beforeEach"], { join, log, store })
 })
 
 it("component", (): void => {
@@ -34,6 +34,8 @@ it("component render", async (): Promise<any> => {
   expect.assertions(5)
 
   class MyComponent {
+    join: typeof join.join
+
     public init(lid: string[]): void {
       expect(1).toBe(1)
     }
@@ -42,11 +44,18 @@ it("component render", async (): Promise<any> => {
       expect(1).toBe(1)
       return <div id={lid} />
     }
+
+    private listenerLoaded(
+      lid: string[],
+      { instance }: ListenerEvent
+    ): void {
+      this.join(lid, instance.id, "component")
+    }
   }
 
   const myComponent = new MyComponent()
 
-  load([], { myComponent })
+  load([], { component, myComponent })
 
   const element = myComponent.render([])
 
@@ -61,6 +70,8 @@ it("async component render", async (): Promise<any> => {
   expect.assertions(4)
 
   class MyComponent {
+    join: typeof join.join
+
     public init(lid: string[]): void {
       expect(1).toBe(1)
     }
@@ -69,11 +80,18 @@ it("async component render", async (): Promise<any> => {
       expect(1).toBe(1)
       return delay(1, <div id={lid} />)
     }
+
+    private listenerLoaded(
+      lid: string[],
+      { instance }: ListenerEvent
+    ): void {
+      this.join(lid, instance.id, "component")
+    }
   }
 
   const myComponent = new MyComponent()
 
-  load([], { myComponent })
+  load([], { component, myComponent })
 
   return myComponent.render([]).then(element => {
     expect(element).toEqual(expect.any(HTMLDivElement))
@@ -85,6 +103,8 @@ it("component force", (): void => {
   expect.assertions(8)
 
   class MyComponent {
+    join: typeof join.join
+
     public init(lid: string[]): void {
       expect(1).toBe(1)
     }
@@ -98,10 +118,17 @@ it("component force", (): void => {
       expect(1).toBe(1)
       return <div id={lid} />
     }
+
+    private listenerLoaded(
+      lid: string[],
+      { instance }: ListenerEvent
+    ): void {
+      this.join(lid, instance.id, "component")
+    }
   }
 
   const myComponent = new MyComponent()
-  load([], { myComponent })
+  load([], { component, myComponent })
 
   const el = <div id="myComponent" />
   document.body.appendChild(el)
@@ -117,7 +144,7 @@ it("component force", (): void => {
   expect(element3).not.toBe(element)
 })
 
-it("nested component render", (): void => {
+it("nested component render", async (): Promise<void> => {
   expect.assertions(2)
 
   class MyComponent {
@@ -136,20 +163,37 @@ it("nested component render", (): void => {
       lid: string[],
       { instance }: ListenerEvent
     ): void {
-      this.join(lid, instance.id, "otherComponent")
+      this.join(
+        lid,
+        instance.id,
+        "component",
+        "otherComponent"
+      )
     }
   }
 
   class OtherComponent {
+    private join: typeof join.join
+
     public render(lid: string[]): Element {
       return <div id={lid} />
+    }
+
+    private listenerLoaded(
+      lid: string[],
+      { instance }: ListenerEvent
+    ): void {
+      this.join(lid, instance.id, "component")
     }
   }
 
   const myComponent = new MyComponent()
   const otherComponent = new OtherComponent()
 
-  load([], { myComponent, otherComponent })
+  const promise = load([], { component, myComponent })
+  load([], { otherComponent })
+
+  await promise
 
   const element = myComponent.render([]).firstElementChild
 
@@ -161,6 +205,8 @@ it("component ssr render", (): void => {
   expect.assertions(6)
 
   class MyComponent {
+    join: typeof join.join
+
     public init(lid: string[], ssrElement: Element): void {
       // eslint-disable-next-line
       expect(ssrElement).toBe(el)
@@ -170,10 +216,17 @@ it("component ssr render", (): void => {
       expect(1).toBe(1)
       return <div id={lid} />
     }
+
+    private listenerLoaded(
+      lid: string[],
+      { instance }: ListenerEvent
+    ): void {
+      this.join(lid, instance.id, "component")
+    }
   }
 
   const myComponent = new MyComponent()
-  load([], { myComponent })
+  load([], { component, myComponent })
 
   const el = <div id="myComponent" />
   document.body.appendChild(el)
@@ -193,6 +246,8 @@ it("component ssr render init return", (): void => {
   expect.assertions(4)
 
   class MyComponent {
+    join: typeof join.join
+
     public init(
       lid: string[],
       ssrElement: Element
@@ -206,10 +261,17 @@ it("component ssr render init return", (): void => {
       expect(0).toBe(1) // fail
       return <div id={lid} />
     }
+
+    private listenerLoaded(
+      lid: string[],
+      { instance }: ListenerEvent
+    ): void {
+      this.join(lid, instance.id, "component")
+    }
   }
 
   const myComponent = new MyComponent()
-  load([], { myComponent })
+  load([], { component, myComponent })
 
   const el = <div id="myComponent" />
   document.body.appendChild(el)

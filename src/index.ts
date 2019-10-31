@@ -207,19 +207,6 @@ export class Component {
     this.join(lid, instance.id, "store")
   }
 
-  private listenerLoadedAny(
-    lid: string[],
-    { instance }: ListenerEvent
-  ): void {
-    if (instance === this) {
-      return
-    }
-
-    if (instance.render) {
-      this.join(lid, instance.id, "component")
-    }
-  }
-
   private listenerJoined(
     lid: string[],
     event: ListenerJoinEvent
