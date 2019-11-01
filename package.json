@@ -22,7 +22,7 @@
     "update": "ncu -u"
   },
   "devDependencies": {
-    "@listener-js/join": "1.27.0",
+    "@listener-js/join": "1.28.0",
     "@listener-js/listener": "3.29.0",
     "@listener-js/log": "1.43.0",
     "@listener-js/store": "0.15.0",

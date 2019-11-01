@@ -47,9 +47,9 @@ it("component render", async (): Promise<any> => {
 
     private listenerLoaded(
       lid: string[],
-      { instance }: ListenerEvent
+      event: ListenerEvent
     ): void {
-      this.join(lid, instance.id, "component")
+      this.join(lid, event, "component")
     }
   }
 
@@ -83,9 +83,9 @@ it("async component render", async (): Promise<any> => {
 
     private listenerLoaded(
       lid: string[],
-      { instance }: ListenerEvent
+      event: ListenerEvent
     ): void {
-      this.join(lid, instance.id, "component")
+      this.join(lid, event, "component")
     }
   }
 
@@ -121,9 +121,9 @@ it("component force", (): void => {
 
     private listenerLoaded(
       lid: string[],
-      { instance }: ListenerEvent
+      event: ListenerEvent
     ): void {
-      this.join(lid, instance.id, "component")
+      this.join(lid, event, "component")
     }
   }
 
@@ -161,11 +161,11 @@ it("nested component render", async (): Promise<void> => {
 
     private listenerLoaded(
       lid: string[],
-      { instance }: ListenerEvent
-    ): void {
-      this.join(
+      event: ListenerEvent
+    ): Promise<void> | void {
+      return this.join(
         lid,
-        instance.id,
+        event,
         "component",
         "otherComponent"
       )
@@ -181,9 +181,9 @@ it("nested component render", async (): Promise<void> => {
 
     private listenerLoaded(
       lid: string[],
-      { instance }: ListenerEvent
-    ): void {
-      this.join(lid, instance.id, "component")
+      event: ListenerEvent
+    ): Promise<void> | void {
+      return this.join(lid, event, "component")
     }
   }
 
@@ -219,9 +219,9 @@ it("component ssr render", (): void => {
 
     private listenerLoaded(
       lid: string[],
-      { instance }: ListenerEvent
+      event: ListenerEvent
     ): void {
-      this.join(lid, instance.id, "component")
+      this.join(lid, event, "component")
     }
   }
 
@@ -264,9 +264,9 @@ it("component ssr render init return", (): void => {
 
     private listenerLoaded(
       lid: string[],
-      { instance }: ListenerEvent
+      event: ListenerEvent
     ): void {
-      this.join(lid, instance.id, "component")
+      this.join(lid, event, "component")
     }
   }
 

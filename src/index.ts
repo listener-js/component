@@ -202,9 +202,9 @@ export class Component {
 
   private listenerLoaded(
     lid: string[],
-    { instance }: ListenerEvent
-  ): void {
-    this.join(lid, instance.id, "store")
+    event: ListenerEvent
+  ): Promise<void> | void {
+    return this.join(lid, event, "store")
   }
 
   private listenerJoined(
